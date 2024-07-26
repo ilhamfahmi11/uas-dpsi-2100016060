@@ -20,10 +20,6 @@ mongoose.connect(dbURI)
   .then(() => console.log('Connected to MongoDB'))
   .catch(err => console.error('Error connecting to MongoDB:', err));
 
-// view engine setup
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'jade');
-
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -35,6 +31,18 @@ app.use('/users', usersRouter);
 app.use('/api/auth', authRouter); // Gunakan rute otentikasi
 app.use('/api', protectedRouter); // Gunakan rute terproteksi
 app.use('/api/datauser', dataUserRouter); // Gunakan rute datauser
+
+
+// Set 'views' directory for any views
+app.set('views', path.join(__dirname, 'views'));
+
+// Set view engine to 'pug'
+app.set('view engine', 'pug');
+
+// Define a route
+app.get('/', (req, res) => {
+  res.render('index', { title: 'Home Page', message: 'Welcome to the Home Page!' });
+});
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
