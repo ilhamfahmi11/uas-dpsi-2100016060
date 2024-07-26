@@ -38,7 +38,7 @@ app.use('/api/datauser', dataUserRouter); // Gunakan rute datauser
 
 // Rute utama
 app.get('/', (req, res) => {
-  res.send('API sudah berjalan...');
+  res.send('API READY!');
 });
 
 // // catch 404 and forward to error handler
