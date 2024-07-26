@@ -2,6 +2,7 @@ var createError = require('http-errors');
 var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
+const bodyParser = require('body-parser');
 var logger = require('morgan');
 var mongoose = require('mongoose');
 require('dotenv').config(); // Tambahkan baris ini untuk memuat variabel dari file .env
@@ -13,6 +14,9 @@ var protectedRouter = require('./routes/protected'); // Rute terproteksi
 var dataUserRouter = require('./routes/datauser'); // Rute datauser
 
 var app = express();
+
+// Middleware untuk body parsing
+app.use(bodyParser.json());
 
 // Connect to MongoDB
 var dbURI = process.env.MONGODB_URI; // Gunakan variabel lingkungan
@@ -26,22 +30,15 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', indexRouter);
+// app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/api/auth', authRouter); // Gunakan rute otentikasi
 app.use('/api', protectedRouter); // Gunakan rute terproteksi
 app.use('/api/datauser', dataUserRouter); // Gunakan rute datauser
 
-
-// Set 'views' directory for any views
-app.set('views', path.join(__dirname, 'views'));
-
-// Set view engine to 'pug'
-app.set('view engine', 'pug');
-
-// Define a route
+// Rute utama
 app.get('/', (req, res) => {
-  res.render('index', { title: 'Home Page', message: 'Welcome to the Home Page!' });
+  res.send('API sudah berjalan...');
 });
 
 // catch 404 and forward to error handler
